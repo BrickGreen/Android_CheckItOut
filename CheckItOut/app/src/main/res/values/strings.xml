@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="btnLocation">Submit</string>
+    <string name="CON_SECRET">5Q3JOivjJewdSE1Bfqz5EWiIrJLdleQUQBVHS2sx9tHh6nM7hn</string>
+    <string name="CON_KEY">c6T1Pgy20vmcbzaYCKZ4ZAUkN</string>
 </resources>

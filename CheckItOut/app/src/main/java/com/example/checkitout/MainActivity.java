@@ -4,13 +4,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TextView tweetDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tweetDisplay = (TextView)findViewById(R.id.txtTweets);
     }
 
     @Override
@@ -33,5 +40,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void searchTwitter(View view) {
+        String searchURL = "https://api.twitter.com/1.1/search/tweets.json?geocode=38.2177972,-85.7628502,15mi";
+        tweetDisplay.setText(searchURL);
     }
 }
