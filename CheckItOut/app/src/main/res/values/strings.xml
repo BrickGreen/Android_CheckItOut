@@ -7,4 +7,6 @@
     <string name="CON_SECRET">5Q3JOivjJewdSE1Bfqz5EWiIrJLdleQUQBVHS2sx9tHh6nM7hn</string>
     <string name="CON_KEY">c6T1Pgy20vmcbzaYCKZ4ZAUkN</string>
     <string name="title_activity_tweets">Tweets</string>
+    <string name="action_tweets">Tweets</string>
+    <string name="action_search">Search</string>
 </resources>
