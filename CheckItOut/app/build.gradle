@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile files('libs/twitter4j-media-support-4.0.4.jar')
     compile files('libs/twitter4j-stream-4.0.4.jar')
+    compile 'com.google.android.gms:play-services:7.8.0'
 }
