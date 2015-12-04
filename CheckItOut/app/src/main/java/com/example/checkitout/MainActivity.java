@@ -2,6 +2,7 @@ package com.example.checkitout;
 
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView lstMedia;
     Button btnSubmit;
+    Button btnTestMap;
     private final String TWIT_CONS_KEY = "0PidwQdIP3Yf1oybRPYLal6A5";
     private final String TWIT_CONS_SEC_KEY = "q5hxuA2C7vz8FD8ebt5iG0MeoK9ua1puem43t0Ydh8NPyaKp3h";
 
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         lstMedia = (ListView) findViewById(R.id.list);
         btnSubmit = (Button) findViewById(R.id.btnLocation);
+        btnTestMap = (Button) findViewById(R.id.btnTestMap);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,17 @@ public class MainActivity extends AppCompatActivity {
                 new SearchOnTwitter().execute();
             }
         });
+
+        btnTestMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this,
+                        MapsActivity.class);
+                startActivity(myIntent);
+
+            }
+        });
+
     }
 
     @Override

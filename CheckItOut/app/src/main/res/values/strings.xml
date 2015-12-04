@@ -10,5 +10,9 @@
 <string name="title_activity_tweets">Tweets</string>
 <string name="action_tweets">Tweets</string>
 <string name="action_search">Search</string>
-    <string name="searching">searching</string>
+
+<string name="btn_maps">Search</string>
+<string name="btn_spots">See top spots in town</string>
+<string name="google_maps_key">AIzaSyD98dhTN7B9kIRpDki-e_qFy3AmrOfs_X4</string>
+<string name="searching">searching</string>
 </resources>
