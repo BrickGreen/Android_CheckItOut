@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                new SearchOnTwitter().execute();
             }
         });
         btnTestMap.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 
@@ -88,12 +87,13 @@ public class MainActivity extends AppCompatActivity {
     class SearchOnTwitter extends AsyncTask<String, Void, Integer> {
         ArrayList<Tweet> tweets;
         final int SUCCESS = 0;
-        final int FAILURE = SUCCESS + 1;
+        final int FAILURE = 1;
         ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog = ProgressDialog.show(MainActivity.this, "", getString(R.string.searching));
         }
 
         @Override
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     this.tweets = new ArrayList<Tweet>();
                     for (twitter4j.Status tweet : tweeters) {
                         str.append("@" + tweet.getUser().getScreenName() + " - " + tweet.getText() + "\n");
-                        System.out.println(str);
+                        Log.d("tweet", "tweet");
                         this.tweets.add(new Tweet("@" + tweet.getUser().getScreenName(), tweet.getText()));
                     }
                     return SUCCESS;
