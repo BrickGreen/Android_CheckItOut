@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnTestMap;
     private final String TWIT_CONS_KEY = "0PidwQdIP3Yf1oybRPYLal6A5";
     private final String TWIT_CONS_SEC_KEY = "q5hxuA2C7vz8FD8ebt5iG0MeoK9ua1puem43t0Ydh8NPyaKp3h";
+    private final String TWIT_TOKEN = "1017676118-HYrdTLTxnWtxc5um9CvooakWknb9PXYIbLxfzeS";
+    private final String TWIT_TOKEN_SEC = "yQStWvg3n8JO7wpBN5kgoQ18cYK2t7x4D5TRzGKXtAXxf";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,18 +103,11 @@ public class MainActivity extends AppCompatActivity {
         protected Integer doInBackground(String... params) {
             try {
                 ConfigurationBuilder builder = new ConfigurationBuilder();
-                builder.setApplicationOnlyAuthEnabled(true);
-                builder.setOAuthConsumerKey(TWIT_CONS_KEY);
-                builder.setOAuthConsumerSecret(TWIT_CONS_SEC_KEY);
-
-                OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
-
-                builder = new ConfigurationBuilder();
-                builder.setApplicationOnlyAuthEnabled(true);
-                builder.setOAuthConsumerKey(TWIT_CONS_KEY);
-                builder.setOAuthConsumerSecret(TWIT_CONS_SEC_KEY);
-                builder.setOAuth2TokenType(token.getTokenType());
-                builder.setOAuth2AccessToken(token.getAccessToken());
+                builder.setDebugEnabled(true)
+                        .setOAuthConsumerKey(TWIT_CONS_KEY)
+                        .setOAuthConsumerSecret(TWIT_CONS_SEC_KEY)
+                        .setOAuthAccessToken(TWIT_TOKEN)
+                        .setOAuthAccessTokenSecret(TWIT_TOKEN_SEC);
 
                 Twitter twitter = new TwitterFactory(builder.build()).getInstance();
 
