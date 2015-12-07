@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 GeoLocation location = new GeoLocation(38.2177972,-85.7628502);
 
                 Query query = new Query();
-                query.setGeoCode(location, 5, Query.MILES);
+                query.setGeoCode(location, 25, Query.MILES);
 
                 QueryResult result = twitter.search(query);
 

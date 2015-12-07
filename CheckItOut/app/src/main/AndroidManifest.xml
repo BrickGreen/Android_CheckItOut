@@ -26,10 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Tweets"
-            android:label="@string/title_activity_tweets" >
-        </activity>
-        <activity
             android:name=".MapsActivity">
         </activity>
         <meta-data
