@@ -42,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lstMedia = (ListView) findViewById(R.id.tweets);
         btnSubmit = (Button) findViewById(R.id.btnLocation);
         btnTestMap = (Button) findViewById(R.id.btnTestMap);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setContentView(R.layout.activity_tweets);
+                lstMedia = (ListView) findViewById(R.id.tweets);
                 new SearchOnTwitter().execute();
             }
         });
