@@ -40,15 +40,14 @@ public class TweetAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.media_list, null);
+            convertView = inflater.inflate(R.layout.tweet_list, null);
         }
 
         Tweet tweet = tweetList.get(position);
-        TextView txtMedia = (TextView) convertView.findViewById(R.id.txtMedia);
+        TextView txtTweet = (TextView) convertView.findViewById(R.id.txtTweet);
         TextView txtTweetBy = (TextView) convertView.findViewById(R.id.txtTweetBy);
-        txtMedia.setText(tweet.getTweet());
 
-        txtMedia.setText(tweet.getTweet());
+        txtTweet.setText(tweet.getTweet());
         txtTweetBy.setText(tweet.getTweetBy());
 
         return convertView;
