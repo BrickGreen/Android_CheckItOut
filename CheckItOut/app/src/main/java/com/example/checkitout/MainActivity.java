@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lstMedia = (ListView) findViewById(R.id.list);
+        lstMedia = (ListView) findViewById(R.id.tweets);
         btnSubmit = (Button) findViewById(R.id.btnLocation);
         btnTestMap = (Button) findViewById(R.id.btnTestMap);
 
@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 if (tweeters != null) {
                     this.tweets = new ArrayList<Tweet>();
                     for (twitter4j.Status tweet : tweeters) {
-                        str.append("@" + tweet.getUser().getScreenName() + " - " + tweet.getText() + "\n");
-                        Log.d("tweet", "tweet");
+                        str.append("@").append(tweet.getUser().getScreenName()).append(" - ").append(tweet.getText()).append("\n");
+                        System.out.println(str);
                         this.tweets.add(new Tweet("@" + tweet.getUser().getScreenName(), tweet.getText()));
                     }
                     return SUCCESS;
