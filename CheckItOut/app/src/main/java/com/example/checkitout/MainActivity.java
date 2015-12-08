@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private final String TWIT_TOKEN = "1017676118-HYrdTLTxnWtxc5um9CvooakWknb9PXYIbLxfzeS";
     private final String TWIT_TOKEN_SEC = "yQStWvg3n8JO7wpBN5kgoQ18cYK2t7x4D5TRzGKXtAXxf";
    //long and lat variables
-    private double latitude;
-    private double longitude;
+   private double latitude;
+   private double longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +66,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+                        //MapsActivity object for current lat and long
+                MapsActivity currentLocation = new MapsActivity();
+                double currentLatitude = currentLocation.getCurrentLatitude();
+                double currentLongitude = currentLocation.getCurrentLongitude();
+                //MapsActivity object for newLat and newLong
+                MapsActivity newLocation = new MapsActivity();
+                double newLat = newLocation.getNewLat();
+                double newLong = newLocation.getNewLong();
+                //MapsActivity object for location
+                MapsActivity getUsersLocation = new MapsActivity();
+                String userLocation = getUsersLocation.getLocation();
+                //Checks to see if user has searched for a new location or if are using current location
+                if(userLocation !=null)
+                {
+                    latitude = newLat;
+                    longitude = newLong;
+                }
+                else{
+                    latitude = currentLatitude;
+                    longitude = currentLongitude;
+                }
 
     }
 
@@ -115,30 +136,31 @@ public class MainActivity extends AppCompatActivity {
 
                 Twitter twitter = new TwitterFactory(builder.build()).getInstance();
 
-                //MapsActivity object for current lat and long
-                MapsActivity currentLocation = new MapsActivity();
-                double currentLatitude = currentLocation.getCurrentLatitude();
-                double currentLongitude = currentLocation.getCurrentLongitude();
-                //MapsActivity object for newLat and newLong
-                MapsActivity newLocation = new MapsActivity();
-                double newLat = newLocation.getNewLat();
-                double newLong = newLocation.getNewLong();
-                //MapsActivity object for location
-                MapsActivity getUsersLocation = new MapsActivity();
-                String userLocation = getUsersLocation.getLocation();
-                //Checks to see if user has searched for a new location or if are using current location
-                if(userLocation !=null)
-                {
-                    latitude = newLat;
-                    longitude = newLong;
-                }
-                else{
-                    latitude = currentLatitude;
-                    longitude = currentLongitude;
-                }
+//                //MapsActivity object for current lat and long
+//                MapsActivity currentLocation = new MapsActivity();
+//                double currentLatitude = currentLocation.getCurrentLatitude();
+//                double currentLongitude = currentLocation.getCurrentLongitude();
+//                //MapsActivity object for newLat and newLong
+//                MapsActivity newLocation = new MapsActivity();
+//                double newLat = newLocation.getNewLat();
+//                double newLong = newLocation.getNewLong();
+//                //MapsActivity object for location
+//                MapsActivity getUsersLocation = new MapsActivity();
+//                String userLocation = getUsersLocation.getLocation();
+//                //Checks to see if user has searched for a new location or if are using current location
+//                if(userLocation !=null)
+//                {
+//                    latitude = newLat;
+//                    longitude = newLong;
+//                }
+//                else{
+//                    latitude = currentLatitude;
+//                    longitude = currentLongitude;
+//                }
 
-                GeoLocation location = new GeoLocation(latitude, longitude);
-
+                GeoLocation location = new GeoLocation(38.21, -85.76);
+                Log.d("Lat = ", Double.toString(latitude));
+                Log.d("Long = ", Double.toString(longitude));
                 Query query = new Query();
                 query.setGeoCode(location, 25, Query.MILES);
 
