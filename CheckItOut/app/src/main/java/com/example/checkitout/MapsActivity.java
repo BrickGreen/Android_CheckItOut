@@ -45,7 +45,11 @@ public class MapsActivity extends AppCompatActivity implements
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GoogleApiClient mGoogleClient;
-
+    private double newLat;
+    private double newLong;
+    private double currentLatitude;
+    private double currentLongitude;
+    private String location;
     public static final String TAG = MapsActivity.class.getSimpleName();
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -76,8 +80,9 @@ public class MapsActivity extends AppCompatActivity implements
     }
     public void onSearch(View view)
     {
+
         EditText location_tf = (EditText)findViewById(R.id.TFaddress);
-        String location = location_tf.getText().toString();
+        location = location_tf.getText().toString();
         List<Address> addressList = null;
         if(location !=null || !location.equals(""))
         {
@@ -92,19 +97,32 @@ public class MapsActivity extends AppCompatActivity implements
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(latLng).title("Location"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            double newLat = address.getLatitude();
-            double newLong = address.getLongitude();
+            newLat = address.getLatitude();
+            newLong = address.getLongitude();
+
             Toast.makeText(getApplicationContext(),
                     String.valueOf("New Location: " + newLat + "," + newLong),
                     Toast.LENGTH_LONG).show();
             Log.d("New Lat = ", Double.toString(newLat));
             Log.d("New Long = ", Double.toString(newLong));
+
         }
+
+
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
 
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    public double getNewLat() {
+        return this.newLat;
+    }
+    public double getNewLong() {
+        return this.newLong;
+    }
+    public String getLocation() {
+        return this.location;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,7 +146,7 @@ public class MapsActivity extends AppCompatActivity implements
 
 
 
-//    }
+    //    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -248,8 +266,8 @@ public class MapsActivity extends AppCompatActivity implements
     private void handleNewLocation(Location location){
         Log.d(TAG, location.toString());
 
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
 
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
@@ -278,7 +296,12 @@ public class MapsActivity extends AppCompatActivity implements
         Log.d("User's current Long = ",Double.toString(currentLongitude));
 
     }
-
+    public double getCurrentLatitude(){
+        return this.currentLatitude;
+    }
+    public double getCurrentLongitude(){
+        return this.currentLongitude;
+    }
     @Override
     public void onLocationChanged(Location location) {
 
