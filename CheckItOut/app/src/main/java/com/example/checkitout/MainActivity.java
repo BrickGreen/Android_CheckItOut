@@ -32,11 +32,14 @@ public class MainActivity extends AppCompatActivity {
     ListView lstMedia;
     Button btnSubmit;
     Button btnTestMap;
+
     private final String TWIT_CONS_KEY = "0PidwQdIP3Yf1oybRPYLal6A5";
     private final String TWIT_CONS_SEC_KEY = "q5hxuA2C7vz8FD8ebt5iG0MeoK9ua1puem43t0Ydh8NPyaKp3h";
     private final String TWIT_TOKEN = "1017676118-HYrdTLTxnWtxc5um9CvooakWknb9PXYIbLxfzeS";
     private final String TWIT_TOKEN_SEC = "yQStWvg3n8JO7wpBN5kgoQ18cYK2t7x4D5TRzGKXtAXxf";
-
+   //long and lat variables
+    private double latitude;
+    private double longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +115,29 @@ public class MainActivity extends AppCompatActivity {
 
                 Twitter twitter = new TwitterFactory(builder.build()).getInstance();
 
-                GeoLocation location = new GeoLocation(38.2177972,-85.7628502);
+                //MapsActivity object for current lat and long
+                MapsActivity currentLocation = new MapsActivity();
+                double currentLatitude = currentLocation.getCurrentLatitude();
+                double currentLongitude = currentLocation.getCurrentLongitude();
+                //MapsActivity object for newLat and newLong
+                MapsActivity newLocation = new MapsActivity();
+                double newLat = newLocation.getNewLat();
+                double newLong = newLocation.getNewLong();
+                //MapsActivity object for location
+                MapsActivity getUsersLocation = new MapsActivity();
+                String userLocation = getUsersLocation.getLocation();
+                //Checks to see if user has searched for a new location or if are using current location
+                if(userLocation !=null)
+                {
+                    latitude = newLat;
+                    longitude = newLong;
+                }
+                else{
+                    latitude = currentLatitude;
+                    longitude = currentLongitude;
+                }
+
+                GeoLocation location = new GeoLocation(latitude, longitude);
 
                 Query query = new Query();
                 query.setGeoCode(location, 25, Query.MILES);
