@@ -1,5 +1,5 @@
 <resources>
-<string name="app_name">Check It Out</string>
+<string name="app_name">Tweets in Town</string>
 
 <string name="hello_world">Hello world!</string>
 <string name="action_settings">Settings</string>
@@ -10,9 +10,9 @@
 <string name="title_activity_tweets">Tweets</string>
 <string name="action_tweets">Tweets</string>
 <string name="action_search">Search</string>
-
+<string name="location_hint">Search for a new location</string>
 <string name="btn_maps">Search</string>
-<string name="btn_spots">See top spots in town</string>
+<string name="btn_see_tweets">See the best tweets</string>
 <string name="google_maps_key">AIzaSyD98dhTN7B9kIRpDki-e_qFy3AmrOfs_X4</string>
 <string name="searching">searching</string>
 </resources>

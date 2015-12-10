@@ -40,10 +40,13 @@ public class MainActivity extends AppCompatActivity {
    //long and lat variables
    private double latitude;
    private double longitude;
+   private double currentLat;
+   private double currentLong;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         btnSubmit = (Button) findViewById(R.id.btnLocation);
         btnTestMap = (Button) findViewById(R.id.btnTestMap);
@@ -66,27 +69,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        Intent receiveIntent = this.getIntent();
+        currentLat = receiveIntent.getDoubleExtra("cLat",currentLat);
+        currentLong = receiveIntent.getDoubleExtra("cLong",currentLong);
+
+
                         //MapsActivity object for current lat and long
-                MapsActivity currentLocation = new MapsActivity();
-                double currentLatitude = currentLocation.getCurrentLatitude();
-                double currentLongitude = currentLocation.getCurrentLongitude();
-                //MapsActivity object for newLat and newLong
-                MapsActivity newLocation = new MapsActivity();
-                double newLat = newLocation.getNewLat();
-                double newLong = newLocation.getNewLong();
-                //MapsActivity object for location
-                MapsActivity getUsersLocation = new MapsActivity();
-                String userLocation = getUsersLocation.getLocation();
-                //Checks to see if user has searched for a new location or if are using current location
-                if(userLocation !=null)
-                {
-                    latitude = newLat;
-                    longitude = newLong;
-                }
-                else{
-                    latitude = currentLatitude;
-                    longitude = currentLongitude;
-                }
+//                MapsActivity currentLocation = new MapsActivity();
+//                double currentLatitude = currentLocation.getCurrentLatitude();
+//                double currentLongitude = currentLocation.getCurrentLongitude();
+//                //MapsActivity object for newLat and newLong
+//                MapsActivity newLocation = new MapsActivity();
+//                double newLat = newLocation.getNewLat();
+//                double newLong = newLocation.getNewLong();
+//                //MapsActivity object for location
+//                MapsActivity getUsersLocation = new MapsActivity();
+//                String userLocation = getUsersLocation.getLocation();
+//                //Checks to see if user has searched for a new location or if are using current location
+//                if(userLocation !=null)
+//                {
+//                    latitude = newLat;
+//                    longitude = newLong;
+//                }
+//                else{
+//                    latitude = currentLatitude;
+//                    longitude = currentLongitude;
+//                }
 
     }
 
@@ -158,9 +166,10 @@ public class MainActivity extends AppCompatActivity {
 //                    longitude = currentLongitude;
 //                }
 
-                GeoLocation location = new GeoLocation(38.21, -85.76);
-                Log.d("Lat = ", Double.toString(latitude));
-                Log.d("Long = ", Double.toString(longitude));
+
+                GeoLocation location = new GeoLocation(currentLat, currentLong);
+                Log.d("Lat = ", Double.toString(currentLat));
+                Log.d("Long = ", Double.toString(currentLong));
                 Query query = new Query();
                 query.setGeoCode(location, 25, Query.MILES);
 

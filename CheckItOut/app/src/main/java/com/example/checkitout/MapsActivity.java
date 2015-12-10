@@ -1,6 +1,8 @@
 package com.example.checkitout;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,8 +11,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +24,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -36,13 +42,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import twitter4j.GeoLocation;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class MapsActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-
+    Button seeTweetsBtn;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GoogleApiClient mGoogleClient;
     private double newLat;
@@ -51,6 +65,11 @@ public class MapsActivity extends AppCompatActivity implements
     private double currentLongitude;
     private String location;
     public static final String TAG = MapsActivity.class.getSimpleName();
+    private final String TWIT_CONS_KEY = "0PidwQdIP3Yf1oybRPYLal6A5";
+    private final String TWIT_CONS_SEC_KEY = "q5hxuA2C7vz8FD8ebt5iG0MeoK9ua1puem43t0Ydh8NPyaKp3h";
+    private final String TWIT_TOKEN = "1017676118-HYrdTLTxnWtxc5um9CvooakWknb9PXYIbLxfzeS";
+    private final String TWIT_TOKEN_SEC = "yQStWvg3n8JO7wpBN5kgoQ18cYK2t7x4D5TRzGKXtAXxf";
+    ListView lstMedia;
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -61,9 +80,21 @@ public class MapsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+           actionBar.setDisplayHomeAsUpEnabled(true);
+           actionBar.setHomeAsUpIndicator(R.mipmap.android_icon);
+        }
+        seeTweetsBtn = (Button) findViewById(R.id.seeTweetsBtn);
 
-
-
+        seeTweetsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_tweets);
+                lstMedia = (ListView) findViewById(R.id.tweets);
+                new SearchOnTwitter().execute();
+            }
+        });
         mGoogleClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -78,6 +109,9 @@ public class MapsActivity extends AppCompatActivity implements
                 .setFastestInterval(1*1000);//1 second
 
     }
+
+
+
     public void onSearch(View view)
     {
 
@@ -115,38 +149,38 @@ public class MapsActivity extends AppCompatActivity implements
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
-    public double getNewLat() {
-        return this.newLat;
-    }
-    public double getNewLong() {
-        return this.newLong;
-    }
-    public String getLocation() {
-        return this.location;
-    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-
-        return super.onCreateOptionsMenu(menu);
-
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                // User chose the "Settings" item, show the app settings UI...
-//                return true;
-//            default:
-//                // If we got here, the user's action was not recognized.
-//                // Invoke the superclass to handle it.
-//                return super.onOptionsItemSelected(item);
-//        }
 
-
-
-    //    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+       switch (item.getItemId()) {
+           case android.R.id.home:
+               // go to previous screen when app icon in action bar is clicked
+               Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+               startActivity(intent);
+           case R.id.action_settings:
+               return true;
+           case R.id.action_search:
+               startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+           case R.id.action_tweets:
+               setContentView(R.layout.activity_tweets);
+               lstMedia = (ListView) findViewById(R.id.tweets);
+               new SearchOnTwitter().execute();
+           break;
+       }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -290,10 +324,14 @@ public class MapsActivity extends AppCompatActivity implements
         Toast.makeText(getApplicationContext(),
                 String.valueOf("Current location: " + currentLatitude + "," + currentLongitude),
                 Toast.LENGTH_LONG).show();
+//Send data to MainActivity
+        Intent send = new Intent(MapsActivity.this, MainActivity.class);
+        send.putExtra("cLat", currentLatitude);
+        send.putExtra("cLong", currentLongitude);
 
-        //Added to find the exact latitude and longitude
+        //   Added to find the exact latitude and longitude
         Log.d("User's current Lat = ", Double.toString(currentLatitude));
-        Log.d("User's current Long = ",Double.toString(currentLongitude));
+        Log.d("User's current Long = ", Double.toString(currentLongitude));
 
     }
     public double getCurrentLatitude(){
@@ -309,4 +347,74 @@ public class MapsActivity extends AppCompatActivity implements
 
 
     }
-}
+    class SearchOnTwitter extends AsyncTask<String, Void, Integer> {
+        ArrayList<Tweet> tweets;
+        final int SUCCESS = 0;
+        final int FAILURE = 1;
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(MapsActivity.this, "", getString(R.string.searching));
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            try {
+                ConfigurationBuilder builder = new ConfigurationBuilder();
+                builder.setDebugEnabled(true)
+                        .setOAuthConsumerKey(TWIT_CONS_KEY)
+                        .setOAuthConsumerSecret(TWIT_CONS_SEC_KEY)
+                        .setOAuthAccessToken(TWIT_TOKEN)
+                        .setOAuthAccessTokenSecret(TWIT_TOKEN_SEC);
+
+                Twitter twitter = new TwitterFactory(builder.build()).getInstance();
+                double latitude;
+                double longitude;
+                if(location !=null)
+                {
+                    latitude = newLat;
+                    longitude = newLong;
+                }
+                else{
+                    latitude = currentLatitude;
+                    longitude = currentLongitude;
+                }
+                GeoLocation location = new GeoLocation(latitude, longitude);
+                Log.d("Lat = ", Double.toString(latitude));
+                Log.d("Long = ", Double.toString(longitude));
+                Query query = new Query();
+                query.setGeoCode(location, 25, Query.MILES);
+
+                QueryResult result = twitter.search(query);
+
+                List<twitter4j.Status> tweeters = result.getTweets();
+                StringBuilder str = new StringBuilder();
+                if (tweeters != null) {
+                    this.tweets = new ArrayList<Tweet>();
+                    for (twitter4j.Status tweet : tweeters) {
+                        str.append("@").append(tweet.getUser().getScreenName()).append(" - ").append(tweet.getText()).append("\n");
+                        System.out.println(str);
+                        this.tweets.add(new Tweet("@" + tweet.getUser().getScreenName(), tweet.getText()));
+                    }
+                    return SUCCESS;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return FAILURE;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            dialog.dismiss();
+            if (result == SUCCESS) {
+                lstMedia.setAdapter(new TweetAdapter(MapsActivity.this, tweets));
+            } else {
+                Toast.makeText(MapsActivity.this, getString(R.string.error), Toast.LENGTH_LONG).show();
+            }
+        }
+    }}

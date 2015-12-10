@@ -1,5 +1,7 @@
 package com.example.checkitout;
 
+
+
 /**
  * Created by aspendavis on 11/22/15.
  */
@@ -28,3 +30,4 @@ public class Tweet {
         this.tweet = tweet;
     }
 }
+
