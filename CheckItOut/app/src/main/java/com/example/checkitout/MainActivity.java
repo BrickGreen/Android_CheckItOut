@@ -1,18 +1,16 @@
 package com.example.checkitout;
 
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,10 +19,8 @@ import java.util.List;
 import twitter4j.GeoLocation;
 import twitter4j.Query;
 import twitter4j.QueryResult;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
-import twitter4j.auth.OAuth2Token;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class MainActivity extends AppCompatActivity {
@@ -171,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Lat = ", Double.toString(currentLat));
                 Log.d("Long = ", Double.toString(currentLong));
                 Query query = new Query();
+                query.setCount(50);
                 query.setGeoCode(location, 25, Query.MILES);
 
                 QueryResult result = twitter.search(query);
