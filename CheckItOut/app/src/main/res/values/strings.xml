@@ -15,4 +15,6 @@
 <string name="btn_see_tweets">See the best tweets</string>
 <string name="google_maps_key">AIzaSyD98dhTN7B9kIRpDki-e_qFy3AmrOfs_X4</string>
 <string name="searching">searching</string>
+<string name="search_tag_hint">Search by hashtag</string>
+<string name="tagsBtn">Search</string>
 </resources>
