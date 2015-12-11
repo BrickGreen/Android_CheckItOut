@@ -6,8 +6,26 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.checkitout.Tweet">
 
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchTags"
+        android:hint="@string/search_tag_hint"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tagsBtn" />
+    <Button
+        style="?android:buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tagsBtn"
+        android:id="@+id/tagsBtn"
+        android:gravity="end"
+        android:layout_alignTop="@+id/searchTags"
+        android:textAlignment="center"
+        android:layout_alignEnd="@+id/tweets" />
     <ListView android:id="@+id/tweets"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tagsBtn" />
 
 </RelativeLayout>
