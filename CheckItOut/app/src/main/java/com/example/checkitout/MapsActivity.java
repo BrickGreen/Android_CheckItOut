@@ -53,6 +53,8 @@ public class MapsActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     Button seeTweetsBtn;
+    Button tagsButton;
+    EditText searchTags;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GoogleApiClient mGoogleClient;
     private double newLat;
@@ -91,6 +93,8 @@ public class MapsActivity extends AppCompatActivity implements
                 new SearchOnTwitter().execute();
             }
         });
+
+
         mGoogleClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -411,6 +415,19 @@ public class MapsActivity extends AppCompatActivity implements
             dialog.dismiss();
             if (result == SUCCESS) {
                 lstMedia.setAdapter(new TweetAdapter(MapsActivity.this, tweets));
+
+                tagsButton = (Button) findViewById(R.id.tagsBtn);
+                searchTags = (EditText) findViewById(R.id.searchTags);
+
+                tagsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setContentView(R.layout.activity_tweets);
+
+                        lstMedia = (ListView) findViewById(R.id.tweets);
+                        new HashSearch().execute(searchTags.getText().toString());
+                    }
+                });
             } else {
                 Toast.makeText(MapsActivity.this, getString(R.string.error), Toast.LENGTH_LONG).show();
             }
@@ -454,7 +471,7 @@ public class MapsActivity extends AppCompatActivity implements
                 GeoLocation location = new GeoLocation(latitude, longitude);
                 Log.d("Lat = ", Double.toString(latitude));
                 Log.d("Long = ", Double.toString(longitude));
-                Query query = new Query();
+                Query query = new Query(params[0]);
                 query.setCount(100);
                 query.setGeoCode(location, 25, Query.MILES);
 
