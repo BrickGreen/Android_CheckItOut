@@ -14,8 +14,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 import twitter4j.GeoLocation;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -168,18 +168,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Long = ", Double.toString(currentLong));
                 Query query = new Query();
                 query.setCount(50);
-                query.setGeoCode(location, 25, Query.MILES);
+                query.setGeoCode(location, 100, Query.MILES);
 
                 QueryResult result = twitter.search(query);
 
                 List<twitter4j.Status> tweeters = result.getTweets();
+                Collections.sort(tweeters, new CustomComparator());
                 StringBuilder str = new StringBuilder();
                 if (tweeters != null) {
                     this.tweets = new ArrayList<Tweet>();
                     for (twitter4j.Status tweet : tweeters) {
                         str.append("@").append(tweet.getUser().getScreenName()).append(" - ").append(tweet.getText()).append("\n");
                         System.out.println(str);
-                        this.tweets.add(new Tweet("@" + tweet.getUser().getScreenName(), tweet.getText()));
+                        this.tweets.add(new Tweet("@" + tweet.getUser().getScreenName(), tweet.getText(), String.valueOf(tweet.getFavoriteCount() + tweet.getRetweetCount())));
                     }
                     return SUCCESS;
                 }

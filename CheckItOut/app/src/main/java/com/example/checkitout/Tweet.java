@@ -8,10 +8,12 @@ package com.example.checkitout;
 public class Tweet {
     String tweetBy;
     String tweet;
+    String favorites;
 
-    public Tweet(String tweetBy, String tweet) {
+    public Tweet(String tweetBy, String tweet, String favorites) {
         this.tweetBy = tweetBy;
         this.tweet = tweet;
+        this.favorites = favorites;
     }
 
     public String getTweetBy() {
@@ -29,5 +31,9 @@ public class Tweet {
     public void setTweet(String tweet) {
         this.tweet = tweet;
     }
+
+    public String getFavorites() { return favorites; }
+
+    public void setFavorites (String favorites) { this.favorites = favorites;}
 }
 
