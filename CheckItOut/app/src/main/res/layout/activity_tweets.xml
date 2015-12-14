@@ -7,7 +7,7 @@
     tools:context="com.example.checkitout.Tweet">
 
     <EditText
-        android:layout_width="280dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:id="@+id/searchTags"
         android:hint="@string/search_tag_hint"
@@ -22,7 +22,8 @@
         android:gravity="end"
         android:layout_alignTop="@+id/searchTags"
         android:textAlignment="center"
-        android:layout_alignEnd="@+id/tweets" />
+        android:layout_alignEnd="@+id/tweets"
+        android:layout_toRightOf="@id/searchTags"/>
     <ListView android:id="@+id/tweets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
